@@ -335,10 +335,13 @@ class WebformContentCreatorUtilities {
    *   Decrypted value
    */
   public static function getDecryptedValue($value, $encryption_profile) {
+    $dec_value = FALSE;
     if (empty($value) || empty($encryption_profile)) {
       return '';
     }
-    $dec_value = \Drupal::service('encryption')->decrypt($value, $encryption_profile);
+    if (\Drupal::service('module_handler')->moduleExists('encrypt')) {
+      $dec_value = \Drupal::service('encryption')->decrypt($value, $encryption_profile);
+    }
     if ($dec_value === FALSE) {
       $dec_value = $value;
     }

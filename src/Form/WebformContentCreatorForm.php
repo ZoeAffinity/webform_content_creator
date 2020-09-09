@@ -97,32 +97,34 @@ class WebformContentCreatorForm extends EntityForm {
       ],
     ];
 
-    $form['use_encrypt'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Decrypt values'),
-      '#description' => $this->t('This only applies when Webform encrypt module is being used in one or more webform elements.'),
-      '#default_value' => $this->entity->getEncryptionCheck(),
-    ];
+    if (\Drupal::service('module_handler')->moduleExists('webform_encrypt')) {
+      $form['use_encrypt'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Decrypt values'),
+        '#description' => $this->t('This only applies when Webform encrypt module is being used in one or more webform elements.'),
+        '#default_value' => $this->entity->getEncryptionCheck(),
+      ];
 
-    // Select with all encryption profiles.
-    $encryptionProfiles_formatted = WebformContentCreatorUtilities::getFormattedEncryptionProfiles();
-    $form['encryption_profile'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Encryption profile'),
-      '#options' => $encryptionProfiles_formatted,
-      '#default_value' => $this->entity->getEncryptionProfile(),
-      '#description' => $this->t("Encryption profile name"),
-      '#states' => [
-        'visible' =>
-          [
-            ':input[name="use_encrypt"]' => ['checked' => TRUE],
-          ],
-        'required' =>
-          [
-            ':input[name="use_encrypt"]' => ['checked' => TRUE],
-          ],
-      ],
-    ];
+      // Select with all encryption profiles.
+      $encryptionProfiles_formatted = WebformContentCreatorUtilities::getFormattedEncryptionProfiles();
+      $form['encryption_profile'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Encryption profile'),
+        '#options' => $encryptionProfiles_formatted,
+        '#default_value' => $this->entity->getEncryptionProfile(),
+        '#description' => $this->t("Encryption profile name"),
+        '#states' => [
+          'visible' =>
+            [
+              ':input[name="use_encrypt"]' => ['checked' => TRUE],
+            ],
+          'required' =>
+            [
+              ':input[name="use_encrypt"]' => ['checked' => TRUE],
+            ],
+        ],
+      ];
+    }
 
     return $form;
   }

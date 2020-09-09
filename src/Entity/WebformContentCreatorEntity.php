@@ -279,7 +279,7 @@ class WebformContentCreatorEntity extends ConfigEntityBase implements WebformCon
     $encryptionProfile = '';
     $useEncrypt = $this->get(WebformContentCreatorInterface::USE_ENCRYPT);
     if ($useEncrypt) {
-      $encryptionProfile = \Drupal::service('entity.manager')->getStorage(WebformContentCreatorInterface::ENCRYPTION_PROFILE)->load($this->getEncryptionProfile());
+      $encryptionProfile = \Drupal::service('entity_type.manager')->getStorage(WebformContentCreatorInterface::ENCRYPTION_PROFILE)->load($this->getEncryptionProfile());
     }
 
     return $encryptionProfile;
